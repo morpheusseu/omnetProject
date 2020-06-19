@@ -31,7 +31,7 @@ void EAR::initialize(){
 void EAR::calculateCostRcv(int type,int bits){
     srcMsg* tmp=COSTm->dup();
     int cost;
-    cost = beta * scope * bits;
+    cost = beta * pow(scope,2) * bits;
     tmp->setId(cost);
     send(tmp,"gateEB$o");
 }

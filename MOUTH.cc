@@ -129,9 +129,9 @@ void MOUTH::calculateCostTran(int type,int bits){
     else if(type == ACK) bits=lenACK;
     else if(type == INIT) bits=lenINIT;
     else bits=0;
-    cost = alpha * scope * bits;
+    cost = alpha * pow(scope,2) * bits;
     tmp->setId(cost);
-    send(tmp,"gateEB$o");
+    send(tmp,"gateMB$o");
 }
 
 void MOUTH::handleMessage(cMessage *smsg){
