@@ -1,0 +1,4 @@
+# omnetProject
+在srcMsg中增加了simtime_t成员并在Mouth的handleMessage函数最终发送时为其赋值
+
+优化了对于参数isSendOut的判断
