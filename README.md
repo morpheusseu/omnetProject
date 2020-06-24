@@ -11,5 +11,7 @@
       修改了一些原本通过INFO消息传送的参数，放入NED文件中
 
       将flag放入NED文件中，从而取代了TURNON、TURNOFF消息
+      
+      将load（即控制RD的参数），numOfNodes（控制节点数量的参数）放入NED文件的network之下，改善了易用性
 
 其他特性敬请自行探索，如有各种代码错误或漏洞请及时反馈，谢谢合作
