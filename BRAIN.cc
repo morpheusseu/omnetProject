@@ -316,7 +316,7 @@ void BRAIN::handleMessage(cMessage *smsg){
         nodeModule->par("degree") = degree;
 
         if(isSensor){
-            if(degree%load!=1){//assign a former node
+            if((degree+load-1)%load!=0){//assign a former node
                 former = msg->getId();
             }
             msg->setDegree(degree);
