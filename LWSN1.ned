@@ -14,9 +14,9 @@
 //  gain DATA
 //  construct RTS CTS
 
-//#Attention : by modifying two parameters 'numOfNodes' in NED file and '#define Num' in constant.h user could reorganize the map 
-//#(1: it only changes the number of nodes)
-//#(2: these two parameters must be same and suit the expression : numOfNodes(or Num) = n * (n+1) / 2 + 1 , n>=0 )
+//#Attention : by modifying two parameters 'numOfNodes' and 'load' in NED file  user could reorganize the map 
+//#(1: it only changes the number of nodes and RD)
+//#(2: these two parameters must suit the expression : numOfNodes = load*d*(d+1)/2+1 , n>=0 ,d is the max degree of this network)
 
 //#user could modify parameters which #define at constant.h
 //#user could change how the message generate from the funtion 'void BRAIN::generateMsg()' in BRAIN.cc
