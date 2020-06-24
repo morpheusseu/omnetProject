@@ -184,6 +184,8 @@ void BRAIN::initialize(){
 
 void BRAIN::handleMessage(cMessage *smsg){
     srcMsg *msg = check_and_cast<srcMsg *>(smsg);
+    if(isPowered);
+    else return;
     if(msg->getType() == T){
         state = Tran;
         refresh();
