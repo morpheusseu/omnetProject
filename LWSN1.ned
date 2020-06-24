@@ -104,6 +104,9 @@ network LWSN1
 {
     parameters:
         int numOfNodes = default(31);
+        int load = default(3);
+        //#number of nodes := load*d*(d+1)/2+1
+        //#d means the max degree of the network
         @display("bgb=2000,300,yellow;bgg=10;bgu=meter");
     submodules:
         node[numOfNodes]: simNode;

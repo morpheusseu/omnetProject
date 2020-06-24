@@ -19,16 +19,7 @@ enum Type{
     UPDATE
 };
 
-#define load 3//1//
-
-#define Num 3*4*5/2+1// 1*5*6/2+1//       //number of nodes := load*d*(d+1)/2+1
-//* * * * * * * * * * * * *
-//  * * * * * * * *
-//  * * * *                load = 4 , d = 3 , Num = 25 (d is the number of paths)
-
 #define sinkId 10000
-
-//#define Freq 0.1*(2+2)*2     //message generation's frequency, means every Freq seconds generate a message (or write like lenRT*(2+factor)*max_degree)
 
 #define lenMM 3       //memory volume (the number of message that every node's memory could contain at most)
 
@@ -114,14 +105,15 @@ private:
 protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
-    virtual void refreshDisplay() const override;
 };
 
 class BRAIN : public cSimpleModule
 {
 private:
-    cModule *nodeModule = nullptr;
+    cModule* nodeModule = nullptr;
     cModule* netModule = nullptr;
+
+    int load = 0;
 
     //power info
     double curBattery=0;
@@ -189,11 +181,14 @@ class MOUTH : public cSimpleModule
 private:
     cModule* nodeModule = nullptr;
     cModule* netModule = nullptr;
+
+    int Num = 0;
+    int load = 0;
     //location info (x,y)
     double x_p;
     double y_p;
-    double location[Num][3];  //location[n][2] contains node n's ID
-    bool Adjacent[Num];
+    double** location;//[Num][3];  //location[n][2] contains node n's ID
+    bool* Adjacent;//[Num];
     //MOUTH to generate DATA(id,destination,content,degree,type)
 
 private:
@@ -220,4 +215,5 @@ private:
 protected:
     virtual void initialize() override;
     virtual void handleMessage(cMessage *msg) override;
+    virtual void finish() override;
 };

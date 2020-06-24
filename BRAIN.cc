@@ -140,6 +140,8 @@ void BRAIN::initConstant(){
     nodeModule = this->getParentModule();
     netModule = nodeModule->getParentModule();
 
+    load = netModule->par("load").intValue();
+
     timer = 0;
 
     RTSCW = CW(RTSCW);
@@ -312,9 +314,6 @@ void BRAIN::handleMessage(cMessage *smsg){
     else if(msg->getType() == INIT && degree == -1){
         degree = msg->getDegree() + 1;
         nodeModule->par("degree") = degree;
-        //TODO:update degree
-        send(UPDATEm->dup(),"gateBE$o");
-        send(UPDATEm->dup(),"gateBM$o");
 
         if(isSensor){
             if(degree%load!=1){//assign a former node
@@ -324,6 +323,11 @@ void BRAIN::handleMessage(cMessage *smsg){
             msg->setId(id);
             sendDelayed(msg,SIFS,"gateBM$o");
         }
+
+        //TODO:update degree & former
+        send(UPDATEm->dup(),"gateBE$o");
+        send(UPDATEm->dup(),"gateBM$o");
+
         scheduleAt(1.0+degree*(factor+1)*lenRT,Rm->dup());
     }
 }

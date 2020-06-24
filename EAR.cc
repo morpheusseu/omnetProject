@@ -4,13 +4,6 @@ using namespace omnetpp;
 
 Define_Module(EAR);//act like a filter
 
-void EAR::refreshDisplay() const{
-    char buf[80];
-    sprintf(buf, "[ %d:>%d ];deg %d",id,next,degree+load-degree%load);
-    getDisplayString().setTagArg("t", 0, buf);
-    getDisplayString().setTagArg("t", 1, "l");
-}
-
 void EAR::initConstant(){
     nodeModule = this->getParentModule();
     netModule = this->getParentModule();
@@ -58,24 +51,6 @@ void EAR::handleMessage(cMessage *smsg){
         //NOT Fundamental type
         //EAR has ability to Turn off Brain and Mouth's functionality
         if(msg->getType() == RTS && nodeModule->par("flag").intValue() == ON){
-            //filter
-            /*if(isRouter&&isSensor&&!(msg->getDegree() <= (degree+load-degree%load))&&state==Rcv){
-                //when the node is Sensor and has ability of Routing
-                nodeModule->bubble("reject RTS");
-                nodeModule->par("flag") == OFF;
-                send(TuF->dup(),"gateEB$o");
-                send(TuF->dup(),"gateEM$o");
-                return;
-            }
-            else if(isRouter&&!isSensor&&degree%load!=0&&msg->getDegree()==degree+1&&state==Rcv){
-                //when the node is just Router
-                nodeModule->bubble("reject RTS");
-                nodeModule->par("flag") == OFF;
-                send(TuF->dup(),"gateEB$o");
-                send(TuF->dup(),"gateEM$o");
-                return;
-            }*/
-
             //get it and transfer it to BRAIN
             if(id == msg->getDestination()&&state==Rcv){
                 send(msg,"gateEB$o");

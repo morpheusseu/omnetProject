@@ -69,13 +69,18 @@ void MOUTH::initConstant(){
     nodeModule = getParentModule();
     netModule = nodeModule->getParentModule();
 
+    Num = netModule->par("numOfNodes").intValue();
+    load = netModule->par("load").intValue();
+
+    location = new double*[Num];
+    Adjacent = new bool[Num];
+    for(int i=0;i<Num;i++){
+        location[i]=new double[3];
+    }
+
     UPDATEm = new srcMsg("update");
     UPDATEm->setType(UPDATE);
 
-    /*INFOm = new srcMsg("isSendOut");
-    INFOm->setType(INFO);
-    INFOm->setId(-1);
-    INFOm->setDegree(-1);*/
 }
 
 void MOUTH::initialize(){
@@ -176,4 +181,12 @@ void MOUTH::handleMessage(cMessage *smsg){
             nodeModule->par("is_data") = true;
         }
     }
+}
+
+void MOUTH::finish(){
+    for(int i=0;i<Num;i++){
+        delete []location[i];
+    }
+    delete []location;
+    delete []Adjacent;
 }
