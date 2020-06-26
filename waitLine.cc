@@ -4,6 +4,7 @@ int waitLine::len = lenMM;
 
 waitLine::waitLine(){
     Line=new srcMsg*[len];
+    pkg_loss = 0;
     curLen=0;
 }
 
@@ -23,6 +24,7 @@ bool waitLine::push(srcMsg* msg){
         return true;
     }
     else{
+        pkg_loss+=1;
         delete Line[0];
         Line[0]=nullptr;
         for(int i=1;i<len;i++){
@@ -52,7 +54,7 @@ srcMsg* waitLine::pop(){
 }
 
 srcMsg* waitLine::get(){
-    //return the first (known as oldest) message
+    //return the first (known as the oldest) message
     if(curLen==0){
         return nullptr;
     }
@@ -63,7 +65,7 @@ srcMsg* waitLine::get(){
 }
 
 bool waitLine::firstOut(){
-    //remove the first (known as oldest) message
+    //remove the first (known as the oldest) message
     if(curLen==0){
         return false;
     }
