@@ -74,11 +74,11 @@ void BRAIN::generateMsg(){
         DATAm->setDegree(degree);
         DATAm->setContent("NORMAL");
         DATAm->setDestination(former);
+        DATAm->setTimestamp(simTime());     //æ·»åŠ äº§ç”Ÿæ•°æ®åŒ…çš„æ—¶é—´
         RcvMM.push(DATAm->dup());
 
-        DATAm->setTimestamp(simTime());     //Ìí¼Ó²úÉúÊı¾İ°üµÄÊ±¼ä
         int num_sent = nodeModule->par("num_sent").intValue();
-        nodeModule->par("num_sent") = num_sent + 1;//¼ÇÂ¼½ÚµãÉú³ÉµÄ°üµÄ¸öÊı
+        nodeModule->par("num_sent") = num_sent + 1;//è®°å½•èŠ‚ç‚¹ç”Ÿæˆçš„åŒ…çš„ä¸ªæ•°
 
         nodeModule->bubble("push normal message");
     }
@@ -87,11 +87,11 @@ void BRAIN::generateMsg(){
         DATAm->setDegree(degree);
         DATAm->setContent("EMERGENCY");
         DATAm->setDestination(former);
+        DATAm->setTimestamp(simTime());     //æ·»åŠ äº§ç”Ÿæ•°æ®åŒ…çš„æ—¶é—´
         RcvMM.push(DATAm->dup());
 
-        DATAm->setTimestamp(simTime());     //Ìí¼Ó²úÉúÊı¾İ°üµÄÊ±¼ä
         int num_sent = nodeModule->par("num_sent").intValue();
-        nodeModule->par("num_sent") = num_sent + 1;//¼ÇÂ¼½ÚµãÉú³ÉµÄ°üµÄ¸öÊı
+        nodeModule->par("num_sent") = num_sent + 1;//è®°å½•èŠ‚ç‚¹ç”Ÿæˆçš„åŒ…çš„ä¸ªæ•°
 
         nodeModule->bubble("push emergency message");
     }
@@ -273,21 +273,21 @@ void BRAIN::handleMessage(cMessage *smsg){
                 msg->setId(id);
                 RcvMM.push(msg);
             }
-            //Èç¹ûÊÇsink½Úµã£¬¼ÆËã°üµÄ´«ÊäÊ±ÑÓ
+            //å¦‚æœæ˜¯sinkèŠ‚ç‚¹ï¼Œè®¡ç®—åŒ…çš„ä¼ è¾“æ—¶å»¶
             else{
-                simtime_t receive_time = simTime();     //°üÊÕµ½µÄÊ±¼ä
+                simtime_t receive_time = simTime();     //åŒ…æ”¶åˆ°çš„æ—¶é—´
                 simtime_t send_time = msg->getTimestamp();
-                int msg_from_degree = msg->getDegree(); //¼ÇÂ¼Êı¾İ°üÀ´×Ô½ÚµãµÄ¼¶±ğ
+                int msg_from_degree = msg->getDegree(); //è®°å½•æ•°æ®åŒ…æ¥è‡ªèŠ‚ç‚¹çš„çº§åˆ«
                 double time_delay = receive_time.dbl() - send_time.dbl();
 
-                if(num_time_delay.find(msg_from_degree)==num_time_delay.end())           //»¹Î´½ÓÊÕµ½À´×Ô¸Ã¼¶±ğ½ÚµãµÄÊı¾İ°ü£¬²åÈë
+                if(num_time_delay.find(msg_from_degree)==num_time_delay.end())           //è¿˜æœªæ¥æ”¶åˆ°æ¥è‡ªè¯¥çº§åˆ«èŠ‚ç‚¹çš„æ•°æ®åŒ…ï¼Œæ’å…¥
                 {
                     num_timeDelay temp;
                     temp.num = 1;
                     temp.time_delay = time_delay;
                     num_time_delay.insert(std::make_pair(msg_from_degree, temp));
                 }
-                else                                                                       //ÒÑ¾­½ÓÊÜ¹ıÀ´×Ô¸Ã¼¶±ğ½ÚµãµÄÊı¾İ£¬¸ü¸ÄÊı¾İ
+                else                                                                       //å·²ç»æ¥å—è¿‡æ¥è‡ªè¯¥çº§åˆ«èŠ‚ç‚¹çš„æ•°æ®ï¼Œæ›´æ”¹æ•°æ®
                 {
                     num_timeDelay temp;
                     temp = num_time_delay.find(msg_from_degree)->second;
@@ -332,7 +332,7 @@ void BRAIN::handleMessage(cMessage *smsg){
     }
 }
 
-//½áÊøº¯Êı£¬ÊÕ¼¯Í³¼Æ±äÁ¿
+//ç»“æŸå‡½æ•°ï¼Œæ”¶é›†ç»Ÿè®¡å˜é‡
 void BRAIN::finish()
 {
     num_received = nodeModule->par("num_received");
@@ -341,7 +341,7 @@ void BRAIN::finish()
     //recordScalar("#degree", degree);
 
     //double power_consumption = node_module->par("batteryCapacity").doubleValue() - node_module->par("cur_battery").doubleValue();
-    //recordScalar("#power_consumption",power_consumption);   //¼ÇÂ¼ºÄµç
+    //recordScalar("#power_consumption",power_consumption);   //è®°å½•è€—ç”µ
 
     if(nodeModule->getIndex()==0)
     {
@@ -359,7 +359,7 @@ void BRAIN::finish()
                 sum_num_sent = sum_num_sent + targetModule->par("num_sent").intValue();
             }
 
-            //»ñÈ¡¸÷¼¶½ÚµãµÄºÄµçÁ¿
+            //è·å–å„çº§èŠ‚ç‚¹çš„è€—ç”µé‡
             int target_degree = targetModule->par("degree").intValue();
             double power_consumption = targetModule->par("batteryCapacity").doubleValue() - targetModule->par("cur_battery").doubleValue();
             if(degree_power.count(target_degree)==0)
@@ -377,7 +377,7 @@ void BRAIN::finish()
             }
         }
 
-        //¼ÇÂ¼¸÷¼¶½ÚµãµÄÆ½¾ùºÄµçÁ¿
+        //è®°å½•å„çº§èŠ‚ç‚¹çš„å¹³å‡è€—ç”µé‡
         std::map<int, num_power>::iterator iter_p;
         for(iter_p = degree_power.begin(); iter_p != degree_power.end(); iter_p++)
         {
@@ -387,14 +387,14 @@ void BRAIN::finish()
         }
 
 
-        //¼ÆËãÊı¾İ°ü´«ÊäÂÊPDR
+        //è®¡ç®—æ•°æ®åŒ…ä¼ è¾“ç‡PDR
         double PDR = (double)num_received/(double)sum_num_sent;
 
-        //¼ÆËãsink½ÚµãÃ¿ÃëÊÕµ½µÄ°üµÄÊıÄ¿
+        //è®¡ç®—sinkèŠ‚ç‚¹æ¯ç§’æ”¶åˆ°çš„åŒ…çš„æ•°ç›®
         simtime_t end_time = simTime();
         double throughput = (double)num_received / end_time.dbl();
 
-        //¼ÆËã¸÷¼¶½Úµã°üµÄ´«Êä
+        //è®¡ç®—å„çº§èŠ‚ç‚¹åŒ…çš„ä¼ è¾“
        std::map<int, num_timeDelay>::iterator iter;
        for(iter = num_time_delay.begin(); iter != num_time_delay.end(); iter++)
        {
