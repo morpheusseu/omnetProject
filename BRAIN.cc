@@ -255,6 +255,9 @@ void BRAIN::handleMessage(cMessage *smsg){
             char display_[20];
             sprintf(display_,"get DATA from degree-%d",msg->getDegree());
             nodeModule->bubble(display_);
+            
+            nodeModule->par("num_received") = node_module->par("num_received").intValue() + 1;
+            
             //send ACK
             ACKm->setDestination(msg->getId());
             ACKm->setId(id);
