@@ -20,7 +20,7 @@ void EAR::calculateCostRcv(int type,int bits = 0){
     else if(type == INIT) bits=lenINIT;
     else bits=0;
 
-    //¼ÆËãÊ£ÓàµçÁ¿
+    //Â¼Ã†Ã‹Ã£ÃŠÂ£Ã“Ã ÂµÃ§ÃÂ¿
     double cost;
     double U = nodeModule->par("U").doubleValue();
     cost = E_elec * bits * pow(10,-9) *3.6 / U;
@@ -33,7 +33,8 @@ void EAR::initialize(){
 
 void EAR::handleMessage(cMessage *smsg){
     srcMsg *msg = check_and_cast<srcMsg *>(smsg);
-    calculateCostRcv(msg->getType());
+    if(nodeModule->par("flag").intValue() == ON)
+        calculateCostRcv(msg->getType());
     if(msg->getType() == T){
         state = Tran;
         nodeModule->par("flag") = ON;
